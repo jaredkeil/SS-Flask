@@ -4,6 +4,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Machine Listening</title>
 
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="{{ url_for('static',filename='js/audiodisplay.js') }}"></script>
 	<script src="{{ url_for('static',filename='js/recorderjs/recorder.js') }}"></script>
 	<script src="{{ url_for('static',filename='js/main.js') }}"></script>
@@ -96,6 +97,7 @@
 		</div>
 	
 		<div id="controls">
+			<!-- <button id="start" type="button"> start monitoring</button> -->
 			<img id="record" src="{{ url_for('static', filename='img/mic.svg') }}" onclick="toggleRecording(this);">
 			<a id="save" href="#"><img src="{{ url_for('static', filename='img/savbutton.svg') }}"></a>
 			<div id="pred" class="hidden">

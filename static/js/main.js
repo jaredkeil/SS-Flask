@@ -13,6 +13,7 @@
    limitations under the License.
 */
 
+ 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var audioContext = new AudioContext();
@@ -24,9 +25,6 @@ var rafID = null;
 var analyserContext = null;
 var canvasWidth, canvasHeight;
 var recIndex = 0;
-// var predResult = document.getElementById("pred-result");
-// var loader = document.getElementById("loader");
-
 
 /* TODO:
 
@@ -168,14 +166,14 @@ function gotStream(stream) {
 }
 
 function initAudio() {
-        if (!navigator.mediaDevices.getUserMedia)
-            navigator.mediaDevices.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        if (!navigator.getUserMedia)
+            navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         if (!navigator.cancelAnimationFrame)
             navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
         if (!navigator.requestAnimationFrame)
             navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
 
-    navigator.mediaDevices.getUserMedia(
+    navigator.getUserMedia(
         {
             "audio": {
                 "mandatory": {
@@ -192,6 +190,7 @@ function initAudio() {
         });
 }
 
-
-
 window.addEventListener('load', initAudio );
+
+
+
