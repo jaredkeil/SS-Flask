@@ -157,7 +157,6 @@ Thumbs.db
 /data/train_df.joblib
 /data/X_train_pca.joblib
 /logs/
-/models/
 /audio/
 /clean/
 /pickles/
