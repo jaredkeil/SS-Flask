@@ -14,12 +14,12 @@ from matplotlib.figure import Figure
 import io
 import base64
 
-from tensorflow.keras.models import load_model
+from tensorflow.python.keras.models import load_model
 import librosa
 from librosa.display import specshow
 
 # Declare a flask app
-application = Flask(__name__)
+app = Flask(__name__)
 
 
 # Model saved with Keras model.save()
@@ -49,7 +49,7 @@ def envelope(y, rate, threshold):
     return mask
 
 
-@application.route('/plot', methods=['GET', 'POST'])
+@app.route('/plot', methods=['GET', 'POST'])
 def plot_spectrogram(mels):
     if request.method == 'POST':
         print('posting to spect')
@@ -89,19 +89,19 @@ def model_predict(x, model):
     return preds, plot
 
 
-@application.route('/', methods=['GET'])
+@app.route('/', methods=['GET'])
 def index():
     # Main page
     return render_template('index.html')
 
 
-@application.route('/predict', methods=['GET', 'POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
     if request.method == 'POST':
         # Get the audio from post request
         print("audio finished")
         if 'file' not in request.files:
-            application.logger.debug("[server] no file part")
+            app.logger.debug("[server] no file part")
             return '[server] no file part'
         
         r = request.files['file']
@@ -124,6 +124,6 @@ def predict():
 
 
 if __name__ == '__main__':
-    application.debug = True
-    application.run()
+    app.debug = True
+    app.run()
     
