@@ -34,19 +34,7 @@ var recIndex = 0;
 - "Monitor input" switch
 */
 
-// function submitAudio() {
-//     // action for the submit button
-//     console.log("submit");
 
-//     // if (!audioRecorder.src|| !imageDisplay.src.startsWith("data")) {
-//     //     window.alert("Please record some audio before submit.");
-//     //     return;
-//     //   }
-//     loader.classList.remove("hidden");
-//     // imageDisplay.classList.add("loading");
-
-//     predictAudio(audioRecorder.exportWAV( doneEncoding ));
-// }
 
 
 function saveAudio() {
@@ -180,14 +168,14 @@ function gotStream(stream) {
 }
 
 function initAudio() {
-        if (!navigator.getUserMedia)
-            navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        if (!navigator.mediaDevices.getUserMedia)
+            navigator.mediaDevices.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         if (!navigator.cancelAnimationFrame)
             navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
         if (!navigator.requestAnimationFrame)
             navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
 
-    navigator.getUserMedia(
+    navigator.mediaDevices.getUserMedia(
         {
             "audio": {
                 "mandatory": {
