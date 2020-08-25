@@ -22,7 +22,6 @@ from librosa.display import specshow
 # Declare a flask app
 app = Flask(__name__)
 
-
 # Model saved with Keras model.save()
 MODEL_PATH = 'models/model1.hdf5'
 
@@ -31,37 +30,29 @@ model = load_model(MODEL_PATH)
 model._make_predict_function()          # Necessary
 print('Model loaded. Start serving...')
 
-pred2class = {0: 'air_conditioner',
-            1: 'car_horn',
-            2: 'children_playing',
-            3: 'dog_bark',
-            4: 'drilling',
-            5: 'engine_idling',
-            6: 'gun_shot',
-            7: 'jackhammer',
-            8: 'siren',
-            9: 'street_music'}
+pred2class = ['air_conditioner', 'car_horn', 'children_playing',
+            'dog_bark', 'drilling', 'engine_idling', 'gun_shot',
+            'jackhammer', 'siren','street_music']
 
 def envelope(y, rate, threshold):
-
     y = pd.Series(y).apply(np.abs)
     y_mean = y.rolling(window=int(rate/5), min_periods=1, center=True).mean()
     mask = y_mean > threshold
     return mask
 
 
-@app.route('/plot', methods=['GET', 'POST'])
+# @app.route('/plot', methods=['GET', 'POST'])
 def plot_spectrogram(mels):
     if request.method == 'POST':
         print('posting to spect')
-    
     # Generate plot
     fig = Figure()
     axis = fig.subplots()
     mels = librosa.core.power_to_db(mels)
-    specshow(mels, ax=axis, sr=22050, cmap='magma')
+    # put spectrogram into plt fig memory
+    specshow(mels, ax=axis, sr=22050, cmap='magma') 
     buf = io.BytesIO()
- 
+    # write spectrogram image into buffer
     fig.savefig(buf, format="png", transparent=True)
     # Embed the result in the html output.
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
@@ -70,13 +61,12 @@ def plot_spectrogram(mels):
 
 
 def model_predict(x, model):
-
-    # masking of x
-    x = x[envelope(x, 22050, 0.00005)]
+    # masking of x (removing quiet parts)
+    x = x[envelope(y=x, rate=22050, threshold=0.00005)]
     vec = librosa.feature.melspectrogram(x, n_mels=60)
-     #send to plot_spectrogram before reshaping
-    plot = plot_spectrogram(vec)
-    #shape for model, trim /pad as necessary
+    # create spectrogram of audio before reshaping for prediction
+    spec = plot_spectrogram(vec)
+    # shape for model, trim/pad as necessary
     max_pad_len = 174
     if vec.shape[1] > max_pad_len:
         center = vec.shape[1] // 2
@@ -87,7 +77,7 @@ def model_predict(x, model):
 
     preds = model.predict(vec)
     # print("preds shape:", preds.shape)
-    return preds, plot
+    return preds, spec
 
 
 @app.route('/', methods=['GET'])
@@ -108,10 +98,10 @@ def predict():
         r = request.files['file']
         signal, _ = librosa.load(r)
 
-        # Make prediction
-        preds, plot = model_predict(signal, model)
+        # featurize input and get model's prediction
+        preds, spec = model_predict(signal, model)
 
-        # Process your result for human
+        # Process result for easy visibility
         pred_proba = "{:.3f}".format(np.amax(preds))    # Max probability
         pred_class = pred2class[np.argmax(preds)] 
 
@@ -119,7 +109,7 @@ def predict():
         result = result.replace('_', ' ').capitalize()
         
         # Serialize the result, you can add additional fields
-        return jsonify(result=result, probability=pred_proba, plot=plot)
+        return jsonify(result=result, probability=pred_proba, spec=spec)
 
     return None
 
