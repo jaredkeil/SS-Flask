@@ -3,7 +3,7 @@ import sys
 
 # Flask
 from flask import Flask, url_for, request, render_template, Response, jsonify
-from flask_talisman import Talisman, GOOGLE_CSP_POLICY
+# from flask_talisman import Talisman, GOOGLE_CSP_POLICY
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
