@@ -33,8 +33,6 @@ var recIndex = 0;
 */
 
 
-
-
 function saveAudio() {
     audioRecorder.exportWAV( doneEncoding );
     // could get mono instead by saying
@@ -150,7 +148,7 @@ function gotStream(stream) {
     audioInput = realAudioInput;
     audioInput.connect(inputPoint);
 
-//    audioInput = convertToMono( input );
+    //  audioInput = convertToMono( input );
 
     analyserNode = audioContext.createAnalyser();
     analyserNode.fftSize = 2048;
@@ -191,6 +189,3 @@ function initAudio() {
 }
 
 window.addEventListener('load', initAudio );
-
-
-

@@ -107,6 +107,7 @@ DEALINGS IN THE SOFTWARE.
   };
 
   Recorder.setupDownload = function(blob, filename){
+    // download //
     var url = (window.URL || window.webkitURL).createObjectURL(blob);
     var link = document.getElementById("save");
     link.href = url;
@@ -119,7 +120,6 @@ DEALINGS IN THE SOFTWARE.
 
     var predResult = document.getElementById("pred-result");
     
-
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -133,7 +133,7 @@ DEALINGS IN THE SOFTWARE.
             predResult.classList.remove("hidden")
             predResult.innerHTML = form.result + " \n -- \n\nprobability: " + form.probability
             let spectrogram = document.getElementById("spect")
-            spectrogram.src = form.plot
+            spectrogram.src = form.spec
             spectrogram.classList.remove("hidden")
             
         },
@@ -142,7 +142,6 @@ DEALINGS IN THE SOFTWARE.
         }
     });
     console.log("[client] automatic jQuery ajax end (for upload)");
-    
   }
 
   window.Recorder = Recorder;

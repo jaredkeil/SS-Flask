@@ -27,7 +27,7 @@ MODEL_PATH = 'models/model1.hdf5'
 
 # Load your own trained model
 model = load_model(MODEL_PATH)
-model._make_predict_function()          # Necessary
+# model._make_predict_function()          # Necessary
 print('Model loaded. Start serving...')
 
 pred2class = ['air_conditioner', 'car_horn', 'children_playing',

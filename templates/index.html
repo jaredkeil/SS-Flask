@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Machine Listening</title>
+	<title>Sourcing Sound</title>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="{{ url_for('static',filename='js/audiodisplay.js') }}"></script>
@@ -12,10 +12,10 @@
 
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	<style>
-	html { overflow: hidden; }
+	html { overflow: auto; }
 	body { 
 		font: 12pt Arial, sans-serif; 
-		background: lightgrey;
+		background: whitesmoke;
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
@@ -29,82 +29,82 @@
 	}
 	footer{
 		width: 500 px;
-		position: absolute;
+		position: fixed;
 		left: 2%;
 		bottom: 0px;
 		margin-bottom: 1px;
 	}
-
 	img{
-		border:0;
+		border:10;
 	}
 	canvas { 
-		display: inline-block; 
+		display: block; 
 		background: #202020; 
-		width: 95%;
+		width: 65%;
 		height: 25%;
-		box-shadow: 0px 0px 10px gray;
+		box-shadow: 0px 0px 0px gray;
 	}
 	#controls {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-around;
+		padding: 1em; 
 		height: 100%;
-		width: 100%;
+		width: 65%;
 	}
-	#record { height: 10vh; }
+	#record { height: 6vh; }
 	#record.recording { 
 		background: red;
-		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
-		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
-		background: radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
+		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,whitesmoke 75%,lightgrey 100%,#7db9e8 100%); 
+		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0%,whitesmoke 75%,lightgrey 100%,#7db9e8 100%); 
+		background: radial-gradient(center, ellipse cover, #ff0000 0%,whitesmoke 75%,lightgrey 100%,#7db9e8 100%); 
 	}
 	#save, #save img { height: 5vh; }
 	#save { opacity: 0.25;}
 	#save[download] { opacity: 1;}
+	#spect {
+		min-height: 35%;
+	}
+
 	#viz {
 		height: 100%;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-evenly;
+		justify-content: space-around;
 		align-items: center;
-	}
-	#image_output {
-		display: flex;
-		flex-direction: column;
-		justify-content: end;
-		height: 100%;
-		width: 100%;
 	}
 	
 	@media (orientation: landscape) {
-		body { flex-direction: row;}
-		#controls { flex-direction: column; height: 90%; width: 10%;}
-		#viz { height: 90%; width: 90%;}
-		/* #image-output { height: 100%; width: 90%;} */
+		body { flex-direction: column; text-align: center;}
+		/* #controls { flex-direction:	 column; height: 50%; width: 10%;} */
+		#viz { height: 80vh; width: 90%; padding: 5%;}
 	}
-
 	</style>
 </head>
+
 <body>
-	<!-- <div> -->
-		<div id="viz">
-			<canvas id="analyser" width="600" height="200"></canvas>
-			<canvas id="wavedisplay" width="600" height="200"></canvas>
-			<img id="spect" class="hidden" width="300" height="200"/>
-		</div>
-	
+	<h2 style="text-align: center;">Sourcing Sound: Urban Sounds Classifier</h2>
+		<form><input TYPE="button" onClick="history.go(0)" VALUE="Click here to enable recording from browser"></form>
+		
+	<div id="viz">
+		<canvas id="analyser" width="600" height="200"></canvas>
+		
 		<div id="controls">
-			<!-- <button id="start" type="button"> start monitoring</button> -->
-			<img id="record" src="{{ url_for('static', filename='img/mic.svg') }}" onclick="toggleRecording(this);">
-			<a id="save" href="#"><img src="{{ url_for('static', filename='img/savbutton.svg') }}"></a>
-			<div id="pred" class="hidden">
-				<p id="pred-result" class="absolute"> Waiting... </p>
-			</div>
-		</div>			
-	<!-- </div> -->
+			<img id="record" src="{{ url_for('static', filename='img/mic.svg') }}" title="Start/Stop Record"
+				onclick="toggleRecording(this);">
+				<p>Click mic to start recording. Click again to get prediction.</p>
+			<a id="save" href="#"><img src="{{ url_for('static', filename='img/savbutton.svg') }}" 
+				title="Save audio (optional)"></a>
+		</div>
+
+		<canvas id="wavedisplay" width="600" height="200"></canvas>
+		<br>
+		<img id="spect" class="hidden" title="Mel Spectrogram" alt="" width="300" height="200"/>
+
+		<p id="pred-result" > Waiting... </p>
+	</div>
 
 	<footer>
 		<p style="font: 10pt Arial, sans-serif; text-align:center"> 
