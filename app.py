@@ -3,6 +3,7 @@ import sys
 
 # Flask
 from flask import Flask, url_for, request, render_template, Response, jsonify
+from flask_talisman import Talisman, GOOGLE_CSP_POLICY
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
@@ -21,6 +22,7 @@ from librosa.display import specshow
 
 # Declare a flask app
 app = Flask(__name__)
+# Talisman(app, content_security_policy=GOOGLE_CSP_POLICY)
 
 # Model saved with Keras model.save()
 MODEL_PATH = 'models/model1.hdf5'
@@ -116,4 +118,4 @@ def predict():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host="0.0.0.0", port=80)
+    app.run(ssl_context='adhoc')
