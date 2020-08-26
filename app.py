@@ -118,4 +118,4 @@ def predict():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(ssl_context='adhoc')
+    app.run(host='0.0.0.0')
