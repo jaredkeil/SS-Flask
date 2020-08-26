@@ -50,7 +50,7 @@ def plot_spectrogram(mels):
     # Generate plot
     fig = Figure()
     axis = fig.subplots()
-    mels = librosa.core.power_to_db(mels)
+    mels = librosa.core.power_to_db(mels) # better visualization
     # put spectrogram into plt fig memory
     specshow(mels, ax=axis, sr=22050, cmap='magma') 
     buf = io.BytesIO()
@@ -72,7 +72,7 @@ def model_predict(x, model):
     max_pad_len = 174
     if vec.shape[1] > max_pad_len:
         center = vec.shape[1] // 2
-        trim = vec[:, (center - max_pad_len//2):(center + max_pad_len//2)]
+        vec = vec[:, (center - max_pad_len//2):(center + max_pad_len//2)]
     pad_width = max_pad_len - vec.shape[1]
     vec = np.pad(vec, pad_width=((0, 0), (0, pad_width)), mode='constant')
     vec = vec.reshape(1, vec.shape[0], vec.shape[1], 1)
@@ -90,6 +90,7 @@ def index():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
+    global app
     if request.method == 'POST':
         # Get the audio from post request
         print("audio finished")
@@ -107,7 +108,7 @@ def predict():
         pred_proba = "{:.3f}".format(np.amax(preds))    # Max probability
         pred_class = pred2class[np.argmax(preds)] 
 
-        result = str(pred_class)               # Convert to string
+        result = str(pred_class)
         result = result.replace('_', ' ').capitalize()
         
         # Serialize the result, you can add additional fields
