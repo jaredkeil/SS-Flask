@@ -64,7 +64,10 @@
 	#save { opacity: 0.25;}
 	#save[download] { opacity: 1;}
 	#spect {
-		min-height: 35%;
+		min-height: 25%;
+		height: 100%;
+		width: 65%;
+		align-items: flex-end;
 	}
 
 	#viz {
@@ -79,29 +82,32 @@
 	@media (orientation: landscape) {
 		body { flex-direction: column; text-align: center;}
 		/* #controls { flex-direction:	 column; height: 50%; width: 10%;} */
-		#viz { height: 80vh; width: 90%; padding: 5%;}
+		#viz { height: 90%; width: 90%; padding: 5%;}
 	}
 	</style>
 </head>
 
 <body>
 	<h2 style="text-align: center;">Sourcing Sound: Urban Sounds Classifier</h2>
-		<form><input TYPE="button" onClick="history.go(0)" VALUE="Click here to enable recording from browser"></form>
+
+	<!-- <form><input TYPE="button" onClick="history.go(0)" VALUE="Click here if mic not automatically enabled"></form> -->
 		
 	<div id="viz">
 		<canvas id="analyser" width="600" height="200"></canvas>
 		
 		<div id="controls">
-			<img id="record" src="{{ url_for('static', filename='img/mic.svg') }}" title="Start/Stop Record"
-				onclick="toggleRecording(this);">
-				<p>Click mic to start recording. Click again to get prediction.</p>
-			<a id="save" href="#"><img src="{{ url_for('static', filename='img/savbutton.svg') }}" 
-				title="Save audio (optional)"></a>
+			<img id="record" src="{{ url_for('static', filename='img/mic.svg') }}" title="Start/Stop Record" onclick="toggleRecording(this);">
+			
+			<div>
+			<p>Click mic to start recording. Click again to get prediction.</p>
+			<form><input TYPE="button" onClick="history.go(0)" VALUE="Click here if mic not automatically enabled"></form>
+			</div>
+			<a id="save" href="#"><img src="{{ url_for('static', filename='img/savbutton.svg') }}" title="Save audio (optional)"></a>
 		</div>
 
 		<canvas id="wavedisplay" width="600" height="200"></canvas>
 		<br>
-		<img id="spect" class="hidden" title="Mel Spectrogram" alt="" width="300" height="200"/>
+		<img id="spect" class="hidden" title="Mel Spectrogram" alt="" width="400" height="200"/>
 
 		<p id="pred-result" > Waiting... </p>
 	</div>

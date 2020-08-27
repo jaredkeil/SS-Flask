@@ -3,7 +3,6 @@ import sys
 
 # Flask
 from flask import Flask, url_for, request, render_template, Response, jsonify
-# from flask_talisman import Talisman, GOOGLE_CSP_POLICY
 from werkzeug.utils import secure_filename
 from gevent.pywsgi import WSGIServer
 
@@ -22,7 +21,6 @@ from librosa.display import specshow
 
 # Declare a flask app
 app = Flask(__name__)
-# Talisman(app, content_security_policy=GOOGLE_CSP_POLICY)
 
 # Model saved with Keras model.save()
 MODEL_PATH = 'models/model1.hdf5'
@@ -52,10 +50,12 @@ def plot_spectrogram(mels):
     axis = fig.subplots()
     mels = librosa.core.power_to_db(mels) # better visualization
     # put spectrogram into plt fig memory
-    specshow(mels, ax=axis, sr=22050, cmap='magma') 
+    specshow(mels, ax=axis, sr=22050, cmap='magma')
+    aspect_ratio = 1000
+    axis.set_aspect(.5)
     buf = io.BytesIO()
     # write spectrogram image into buffer
-    fig.savefig(buf, format="png", transparent=True)
+    fig.savefig(buf, format="png", transparent=True, dpi=100, )
     # Embed the result in the html output.
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
 
@@ -117,6 +117,6 @@ def predict():
     return None
 
 
-# if __name__ == '__main__':
-#     app.debug = True
-#     app.run(host='0.0.0.0', port=8000)
+if __name__ == '__main__':
+    app.debug = True
+    app.run()
