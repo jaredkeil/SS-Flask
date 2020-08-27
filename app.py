@@ -55,10 +55,9 @@ def plot_spectrogram(mels):
     axis.set_aspect(.5)
     buf = io.BytesIO()
     # write spectrogram image into buffer
-    fig.savefig(buf, format="png", transparent=True, dpi=100, )
+    fig.savefig(buf, format="png", transparent=True, dpi=100, bbox_inches='tight', pad_inches=0)
     # Embed the result in the html output.
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
-
     return "data:image/png;base64,{}".format(data)
 
 
@@ -90,7 +89,6 @@ def index():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    global app
     if request.method == 'POST':
         # Get the audio from post request
         print("audio finished")
@@ -119,4 +117,4 @@ def predict():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0')

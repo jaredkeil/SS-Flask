@@ -130,12 +130,17 @@ DEALINGS IN THE SOFTWARE.
         cache: false,
         success: function (form) {
             console.log("[client] recording completed: \n",form);
+
             predResult.classList.remove("hidden")
             predResult.innerHTML = form.result + " \n -- \n\nprobability: " + form.probability
-            let spectrogram = document.getElementById("spect")
-            spectrogram.src = form.spec
-            spectrogram.classList.remove("hidden")
             
+            var spect_canvas = document.getElementById("spect_canvas");
+            var ctx = spect_canvas.getContext("2d");
+            var img = new Image();
+            img.onload = function() {
+              ctx.drawImage(img, 0, 0, 600, 200);
+            };
+            img.src = form.spec;
         },
         error: function (e) {
             console.log("[client] error upload: \n",e);

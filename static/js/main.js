@@ -183,7 +183,7 @@ function initAudio() {
                 "optional": []
             },
         }, gotStream, function(e) {
-            alert('Error getting audio');
+            alert('Please allow audio for fully functionality');
             console.log(e);
         });
 }

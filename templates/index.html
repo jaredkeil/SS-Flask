@@ -14,111 +14,168 @@
 	<style>
 	html { overflow: auto; }
 	body { 
-		font: 12pt Arial, sans-serif; 
-		background: whitesmoke;
+		font: 12pt Arial, Helvetica, sans-serif;
+		color: #00a4d6; 
+		background:black;
 		display: flex;
 		flex-direction: column;
-		height: 100vh;
+		align-content:stretch;
+		text-align: center;
+		height: 100%;
 		width: 100%;
 		margin: 0 0;
 	}
-	p.absolute {
-		position: absolute;
-		bottom: 100px;
-		right: 100px;
+	h1, h2, h3 {
+		margin: .25em;
+	}
+	h1 {margin-top: 1em;}
+	p {
+		margin: 1em 2em 1em 2em;
 	}
 	footer{
-		width: 500 px;
+		width: 500px;
 		position: fixed;
 		left: 2%;
 		bottom: 0px;
 		margin-bottom: 1px;
 	}
-	img{
-		border:10;
+	/* img{
+		border: hidden;
+	} */
+
+	/* img.hidden {
+		display: none;
+	} */
+
+	img:hover{
+		cursor:pointer;
+	}
+	.filter_svg { 
+		filter: invert(50%) sepia(99%) saturate(2563%) hue-rotate(161deg) brightness(95%) contrast(101%);
+	}
+	.refresh {
+		background-color: #000000;
+		color: #00a4d6;
+		font-weight: bold;
+		border: 1px solid #00a4d6;
+		border-radius: 4px;
+		padding: .15em .5em;
+	}
+	.refresh:hover {
+		background-color: #00a4d6;
+		color: #000000;
+		transition-duration: 0.4s;}
+	.refresh:active {
+		background-color: #00a4d6c0;
+		transform: translateY(2px);
 	}
 	canvas { 
 		display: block; 
-		background: #202020; 
+		background:black;
 		width: 65%;
 		height: 25%;
-		box-shadow: 0px 0px 0px gray;
+		border: .1em solid #00a4d6c0;
 	}
 	#controls {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		justify-content: space-around;
-		padding: 1em; 
-		height: 100%;
-		width: 65%;
+		justify-content:  space-around;
+		margin: 1em auto 1em;
+		/* height: 100%; */
 	}
-	#record { height: 6vh; }
+	#record { 
+		height: 2em;
+	}
 	#record.recording { 
+		color: black;
 		background: red;
-		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,whitesmoke 75%,lightgrey 100%,#7db9e8 100%); 
-		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0%,whitesmoke 75%,lightgrey 100%,#7db9e8 100%); 
-		background: radial-gradient(center, ellipse cover, #ff0000 0%,whitesmoke 75%,lightgrey 100%,#7db9e8 100%); 
+		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0,black 80%); 
+		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0,black 50%); 
+		background: radial-gradient(center, ellipse cover, #ff0000 0,black 50%); 
 	}
-	#save, #save img { height: 5vh; }
+	#save, #save img { 
+		height: 1.5em; 
+		/* padding-left: .5em; */
+		margin-left: 0.5em;
+	}
 	#save { opacity: 0.25;}
 	#save[download] { opacity: 1;}
-	#spect {
-		min-height: 25%;
-		height: 100%;
-		width: 65%;
-		align-items: flex-end;
-	}
+
 
 	#viz {
-		height: 100%;
-		width: 100%;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-around;
 		align-items: center;
+		justify-content: space-around;
+		height: 50%;
+		width: 50%;
+		margin: auto;
 	}
-	
-	@media (orientation: landscape) {
-		body { flex-direction: column; text-align: center;}
-		/* #controls { flex-direction:	 column; height: 50%; width: 10%;} */
-		#viz { height: 90%; width: 90%; padding: 5%;}
-	}
+
+
+	/* @media (orientation: landscape) {
+		body {
+			flex-direction: column; 
+			text-align: center; 
+			align-content: initial;
+			margin: auto;
+		}
+		#controls {
+			flex-direction:	row;
+			height: 50%;
+			width: 10%;
+		}
+		#viz {
+			height: 50%;
+			width: 50%;
+			padding: 5%;
+			margin: 0 auto;
+		}
+	} */
 	</style>
 </head>
 
 <body>
-	<h2 style="text-align: center;">Sourcing Sound: Urban Sounds Classifier</h2>
-
-	<!-- <form><input TYPE="button" onClick="history.go(0)" VALUE="Click here if mic not automatically enabled"></form> -->
-		
-	<div id="viz">
-		<canvas id="analyser" width="600" height="200"></canvas>
-		
-		<div id="controls">
-			<img id="record" src="{{ url_for('static', filename='img/mic.svg') }}" title="Start/Stop Record" onclick="toggleRecording(this);">
-			
-			<div>
-			<p>Click mic to start recording. Click again to get prediction.</p>
-			<form><input TYPE="button" onClick="history.go(0)" VALUE="Click here if mic not automatically enabled"></form>
-			</div>
-			<a id="save" href="#"><img src="{{ url_for('static', filename='img/savbutton.svg') }}" title="Save audio (optional)"></a>
-		</div>
-
-		<canvas id="wavedisplay" width="600" height="200"></canvas>
-		<br>
-		<img id="spect" class="hidden" title="Mel Spectrogram" alt="" width="400" height="200"/>
-
-		<p id="pred-result" > Waiting... </p>
+	<h1>Sourcing Sound</h1>
+	<h2>Urban Sounds Classifier</h2>
+	<h3>Created by Jared Keil &nbsp;&nbsp;
+		<a href="mailto:jaredrkeil@gmail.com">Email</a> &nbsp;&nbsp;
+		<a href="https://github.com/crunker99/">Github </a> &nbsp;&nbsp;
+		<a href="https://github.com/crunker99/sourcing-sound/tree/master/Flask-application">Code</a>
+	</h3>
+	<div>
+		<p>Click mic to start recording. Click again to get prediction.
+		<br>If you don't automatically see some response from page 
+		<button class="refresh" onClick="history.go(0)" > click here</button>
+		instead this is a test thing.</p>
 	</div>
 
-	<footer>
-		<p style="font: 10pt Arial, sans-serif; text-align:center"> 
+	<div id="controls">
+		<div>Record</div>
+		<img id="record" src="{{ url_for('static', filename='img/micColor.svg') }}" title="Start/Stop Record" onclick="toggleRecording(this);">
+
+		<div style="margin-inline-start: 1em;">Save</div>
+		<a id="save" href="#"><img src="{{ url_for('static', filename='img/savbuttonColor.svg') }}" title="Save audio (optional)"></a>
+	 	
+	</div>
+
+	<div id="viz">
+		<canvas id="analyser" width="600" height="200" title="Live Audio Frequency bins"></canvas><br>
+		<canvas id="wavedisplay" width="600" height="200" title="Recorded Waveform"></canvas><br>
+		<p id="pred-result" > Waiting... </p>
+		<canvas id="spect_canvas" width="600" height="200" title="Spectrogram Canvas"></canvas><br>
+
+		
+	</div>
+
+	<!-- <footer> -->
+		<!-- <h3 style="font: 10pt Arial, sans-serif; text-align:center"> 
 			Created by Jared Keil &nbsp;&nbsp;
 			<a href="mailto:jaredrkeil@gmail.com">Email</a> &nbsp;&nbsp;
 			<a href="https://github.com/crunker99/">Github </a> &nbsp;&nbsp;
 			<a href="https://github.com/crunker99/sourcing-sound/tree/master/Flask-application">Code</a>
-		</p>
-	  </footer>
+		</h3> -->
+	  <!-- </footer> -->
 </body>
 </html>
