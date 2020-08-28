@@ -27,8 +27,10 @@ MODEL_PATH = 'models/model1.hdf5'
 
 # Load your own trained model
 model = load_model(MODEL_PATH)
-# model._make_predict_function()          # Necessary
+# model._make_predict_function()  # necessary for tf v1.
+model.summary()
 print('Model loaded. Start serving...')
+
 
 pred2class = ['air_conditioner', 'car_horn', 'children_playing',
             'dog_bark', 'drilling', 'engine_idling', 'gun_shot',
@@ -50,12 +52,13 @@ def plot_spectrogram(mels):
     axis = fig.subplots()
     mels = librosa.core.power_to_db(mels) # better visualization
     # put spectrogram into plt fig memory
-    specshow(mels, ax=axis, sr=22050, cmap='magma')
+    specshow(mels, ax=axis, sr=22050, cmap='Blues')
     aspect_ratio = 1000
     axis.set_aspect(.5)
     buf = io.BytesIO()
     # write spectrogram image into buffer
-    fig.savefig(buf, format="png", transparent=True, dpi=100, bbox_inches='tight', pad_inches=0)
+    fig.tight_layout()
+    fig.savefig(buf, format="png", transparent=True, dpi=600, bbox_inches='tight', pad_inches=0)
     # Embed the result in the html output.
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
     return "data:image/png;base64,{}".format(data)

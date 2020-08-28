@@ -1,9 +1,12 @@
-# Audio Recorder + CNN Sound Recognition
+# CNN Sound Recognition Webapp
 
 
 
+A sound recogniton webapp that uses a convolutional neural network trained on a few thosuand examples to make predictions in 10 categories.
 
-A sound recogniton app that uses RecorderJS with the web audio input feature to record audio from
-[Web Audio API](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html).  
+To see the process of data collection and model development, visit [sourcing-sound](https://github.com/crunker99/sourcing-sound).
+
+Credit to 
+[Web Audio API](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html) for many of the audio input features.  
 
 
