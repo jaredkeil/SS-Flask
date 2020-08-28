@@ -97,8 +97,10 @@ def predict():
             return '[server] no file part'
         
         r = request.files['file']
-        signal, _ = librosa.load(r)
-
+        try:
+            signal, _ = librosa.load(r)
+        except ValueError:
+            return jsonify(result="inputError")
         # featurize input and get model's prediction
         preds, spec = model_predict(signal, model)
 

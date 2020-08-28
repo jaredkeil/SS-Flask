@@ -47,6 +47,9 @@ function gotBuffers( buffers ) {
     // the ONLY time gotBuffers is called is right after a new recording is completed - 
     // so here's where we should set up the download.
     audioRecorder.exportWAV( doneEncoding );
+
+    var pred_result = document.getElementById("pred-result")
+    pred_result.innerHTML = ". . . generating prediction . . ."
 }
 
 function doneEncoding( blob ) {
@@ -69,6 +72,9 @@ function toggleRecording( e ) {
         e.classList.add("recording");
         audioRecorder.clear();
         audioRecorder.record();
+
+        var pred_result = document.getElementById("pred-result")
+        pred_result.innerHTML = "RECORDING"
     }
 }
 

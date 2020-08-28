@@ -128,19 +128,28 @@ DEALINGS IN THE SOFTWARE.
         processData: false,
         contentType: false,
         cache: false,
+
+
+
         success: function (form) {
             console.log("[client] recording completed: \n",form);
 
-            predResult.classList.remove("hidden")
-            predResult.innerHTML = form.result + " \n -- \n\nprobability: " + form.probability
-            
-            var spect_canvas = document.getElementById("spect_canvas");
-            var ctx = spect_canvas.getContext("2d");
-            var img = new Image();
-            img.onload = function() {
-              ctx.drawImage(img, 0, 0, 600, 200);
-            };
-            img.src = form.spec;
+            // if there is some error with getting audio form.result will purposefully contain an error
+            if (form.result == "inputError") {
+              predResult.innerHTML = "input error - try refreshing page"
+            }
+            else {
+              predResult.classList.remove("hidden")
+              predResult.innerHTML = form.result + " \n -- \n\nprobability: " + form.probability
+              
+              var spect_canvas = document.getElementById("spect_canvas");
+              var ctx = spect_canvas.getContext("2d");
+              var img = new Image();
+              img.onload = function() {
+                ctx.drawImage(img, 0, 0, 600, 200);
+              };
+              img.src = form.spec;
+            }
         },
         error: function (e) {
             console.log("[client] error upload: \n",e);
