@@ -15,7 +15,6 @@
 
  
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
-
 var audioContext = new AudioContext();
 var audioInput = null,
     realAudioInput = null,
@@ -31,7 +30,6 @@ var recIndex = 0;
 - offer mono option
 - "Monitor input" switch
 */
-
 
 function saveAudio() {
     audioRecorder.exportWAV( doneEncoding );
@@ -170,6 +168,8 @@ function gotStream(stream) {
 }
 
 function initAudio() {
+
+        console.log("testing inside initAUdio")
         if (!navigator.getUserMedia)
             navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         if (!navigator.cancelAnimationFrame)
@@ -192,6 +192,15 @@ function initAudio() {
             alert('Please allow audio for fully functionality');
             console.log(e);
         });
+
+    // resume audio context when user interacted with the page.
+    document.getElementById('interaction').addEventListener('click', function() {
+        audioContext.resume().then(() => {
+            console.log('Audio Context resumed successfully');
+        });
+    });
 }
 
 window.addEventListener('load', initAudio );
+
+

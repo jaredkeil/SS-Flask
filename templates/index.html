@@ -1,7 +1,15 @@
 <!doctype html>
 <html>
 <head>
+	<meta charset="utf-8">
+	<meta name="description" content="Make a sound and get a prediction! Machine learning audio classification. Works best for city sounds.">
+	<meta name="keywords" content="urbansound8k, audio, classification, machine, neural, python, tensorflow">
+	<meta name="generator" content="python, flask, tensorflow, javascript, , gunicorn, nginx">
+	<meta name="theme-color" content="#141414">
+	<meta name="author" content="Jared Keil">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="subject" content="Audio classification with machine learning">
+	<meta name="robots" content="index, follow">
 	<title>Sourcing Sound</title>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -11,6 +19,7 @@
 	<script src="{{ url_for('static', filename='js/jquery-3.3.1.js') }}"> </script>
 
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	
 	<style>
 	html { overflow: auto; }
 	body { 
@@ -24,7 +33,7 @@
 		height: 10%;
 		width: 100%;
 		max-width: 100%;
-		margin: 0 0;
+		margin: 0 auto 2em;
 	}
 
 	h1, h2, h3, h4, h5, footer {
@@ -61,15 +70,15 @@
 		margin-bottom: 0;
 	}
 
-	p.steps{margin-bottom: 0}
+	p.steps{ margin-bottom: 0; max-width: 95%; }
 
 	p.note  {
-		text-align: left;
+		/* text-align: left; */
 		margin-bottom: 0;
 	}
 
 	p.explain {
-		text-align: left;
+		/* text-align: left; */
 		text-indent: 2em;
 		margin-top: 2em;
 	}
@@ -191,13 +200,13 @@
 	
 	<div>
 		<p class="howto">How To Use</p>
-		<p class="steps"> > click mic button to start/stop recording
-		<br> > view the captured waveform and spectrogram
-		<br> > predictions generate below within a few seconds </p>
+		<p class="steps"> click mic button to start/stop recording
+		<br> view the captured waveform and spectrogram
+		<br> predictions generate below within a few seconds </p>
 		<br>
 		<p class="note">
-		Note: If you don't already see an active audio vizualizer in the first large box below, it's either because you haven't allowed the mic, or your browser wants an initial interaction (aka click) on the page.
-		<button class="refresh" onClick="history.go(0)"> click here to 'interact' and give chrome what it wants</button>
+		Note: If you don't already see an active audio vizualizer in the first large box below, it's either because you haven't allowed the mic, or your browser wants an initial interaction (a.k.a click) on the page.
+		<button class="refresh" id="interaction"> click here to 'interact' and give chrome what it wants</button>
 	</p>
 	</div>
 
@@ -207,10 +216,8 @@
 			xmlns="http://www.w3.org/2000/svg" version="1.1" width="512" height="512" viewBox="0 0 512 512" fill="#00000">
 			<path d="M 240.00,352.00c 44.183,0.00, 80.00-35.817, 80.00-80.00L 320.00,80.00 c0.00-44.183-35.817-80.00-80.00-80.00s-80.00,35.817-80.00,80.00l0.00,192.00 C 160.00,316.183, 195.818,352.00, 240.00,352.00zM 352.00,224.00l0.00,48.00 c0.00,61.855-50.145,112.00-112.00,112.00c-61.856,0.00-112.00-50.145-112.00-112.00l0.00-48.00 L 96.00,224.00 l0.00,48.00 c0.00,74.119, 56.002,135.15, 128.00,143.11L 224.00,480.00 l-64.00,0.00 l0.00,32.00 l 64.00,0.00 l 32.00,0.00 l 64.00,0.00 l0.00-32.00 l-64.00,0.00 l0.00-64.89 c 71.997-7.96, 128.00-68.991, 128.00-143.11l0.00-48.00 L 352.00,224.00 z" ></path>
 		</svg>
-		<div>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;save
-		</div>
-		&nbsp;&nbsp;
+		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+		<div>save</div> &nbsp;&nbsp;
 		<a id="save" href="#">			
 			<svg id="savbutton" title="save audio (optional)" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 459 459" fill="#00000">
 				<path d="M357 0H51C23 0 0 23 0 51v357c0 28.1 23 51 51 51h357c28.1 0 51-22.9 51-51V102L357 0zM229.5 408c-43.3 0-76.5-33.1-76.5-76.5s33.2-76.5 76.5-76.5c43.4 0 76.5 33.2 76.5 76.5S272.9 408 229.5 408zM306 153H51V51h255V153z"/>
@@ -218,14 +225,18 @@
 		</a>
 	</div>
 
+	<p id="pred-result" >
+		. . . waiting to record . . .
+	</p>
+
 	<div id="viz">
 		<canvas id="analyser" width="600" height="200" title="Live Audio Frequency bins"></canvas>
 		<br>
 		<canvas id="wavedisplay" width="600" height="200" title="Recorded Waveform"></canvas>
 		<br>
-		<p id="pred-result" >
+		<!-- <p id="pred-result" >
 			. . . waiting to record . . .
-		</p>
+		</p> -->
 		<canvas id="spect_canvas" width="600" height="200" title="Spectrogram Canvas"></canvas>
 		<br>
 	</div>

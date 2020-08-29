@@ -1,4 +1,4 @@
-# CNN Sound Recognition Webapp
+# Flask-based webapp for sound classification with a neural network
 
 
 
