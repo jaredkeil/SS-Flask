@@ -168,26 +168,25 @@ function gotStream(stream) {
 }
 
 function initAudio() {
-
-        console.log("testing inside initAUdio")
-        if (!navigator.getUserMedia)
-            navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        if (!navigator.mediaDevices.getUserMedia)
+            navigator.mediaDevices.getUserMedia =  navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         if (!navigator.cancelAnimationFrame)
             navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
         if (!navigator.requestAnimationFrame)
             navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
 
-    navigator.getUserMedia(
+    navigator.mediaDevices.getUserMedia(
         {
-            "audio": {
-                "mandatory": {
-                    "googEchoCancellation": "false",
-                    "googAutoGainControl": "false",
-                    "googNoiseSuppression": "false",
-                    "googHighpassFilter": "false"
-                },
-                "optional": []
-            },
+            "audio": true
+            // {
+                // "mandatory": {
+                //     "googEchoCancellation": "false",
+                //     "googAutoGainControl": "false",
+                //     "googNoiseSuppression": "false",
+                //     "googHighpassFilter": "false"
+                // },
+                // "optional": []
+            // },
         }, gotStream, function(e) {
             alert('Please allow audio for fully functionality');
             console.log(e);
