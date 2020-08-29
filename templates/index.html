@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="description" content="Make a sound and get a prediction! Machine learning audio classification. Works best for city sounds.">
-	<meta name="keywords" content="urbansound8k, audio, classification, machine, neural, python, tensorflow">
-	<meta name="generator" content="python, flask, tensorflow, javascript, , gunicorn, nginx">
+	<meta name="keywords" content="urbansound8k,audio,classification,machine,neural,python,tensorflow">
+	<meta name="generator" content="python,flask,tensorflow,javascript,Web Audio API,gunicorn,nginx">
 	<meta name="theme-color" content="#141414">
 	<meta name="author" content="Jared Keil">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
@@ -23,7 +23,7 @@
 	<style>
 	html { overflow: auto; }
 	body { 
-		font: 12pt Arial, Helvetica, sans-serif;
+		font: 14pt Arial, Helvetica, sans-serif;
 		color: #cfb845; 
 		background: #141414;
 		display: flex;
@@ -150,8 +150,8 @@
 		fill: black;
 		background: red;
 		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
-		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0,black 50%); 
-		background: radial-gradient(center, ellipse cover, #ff0000 0,black 50%); 
+		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
+		background: radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
 		transform: translateY(2px);
 	}
 
@@ -171,26 +171,6 @@
 		max-width: 95%;
 		margin: 0 auto;
 	}
-
-	/* @media (orientation: landscape) {
-		body {
-			flex-direction: column; 
-			text-align: center; 
-			align-content: initial;
-			margin: auto;
-		}
-		#controls {
-			flex-direction:	row;
-			height: 50%;
-			width: 10%;
-		}
-		#viz {
-			height: 50%;
-			width: 50%;
-			padding: 5%;
-			margin: 0 auto;
-		}
-	} */
 	</style>
 </head>
 

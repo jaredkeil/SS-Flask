@@ -145,8 +145,8 @@ function toggleMono() {
 }
 
 function gotStream(stream) {
+    console.log("gotStream")
     inputPoint = audioContext.createGain();
-
     // Create an AudioNode from the stream.
     realAudioInput = audioContext.createMediaStreamSource(stream);
     audioInput = realAudioInput;
@@ -167,37 +167,39 @@ function gotStream(stream) {
     updateAnalysers();
 }
 
+// async function interact() 
+
+
 function initAudio() {
-        if (!navigator.mediaDevices.getUserMedia)
-            navigator.mediaDevices.getUserMedia =  navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-        if (!navigator.cancelAnimationFrame)
-            navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
-        if (!navigator.requestAnimationFrame)
-            navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
-
-    navigator.mediaDevices.getUserMedia(
-        {
-            "audio": true
-            // {
-                // "mandatory": {
-                //     "googEchoCancellation": "false",
-                //     "googAutoGainControl": "false",
-                //     "googNoiseSuppression": "false",
-                //     "googHighpassFilter": "false"
-                // },
-                // "optional": []
-            // },
-        }, gotStream, function(e) {
-            alert('Please allow audio for fully functionality');
-            console.log(e);
-        });
-
+    console.log('initAudio')
     // resume audio context when user interacted with the page.
+
+    if (!navigator.mediaDevices.getUserMedia)
+        navigator.mediaDevices.getUserMedia =  navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    if (!navigator.cancelAnimationFrame)
+        navigator.cancelAnimationFrame = navigator.webkitCancelAnimationFrame || navigator.mozCancelAnimationFrame;
+    if (!navigator.requestAnimationFrame)
+        navigator.requestAnimationFrame = navigator.webkitRequestAnimationFrame || navigator.mozRequestAnimationFrame;
+
+    navigator.mediaDevices.getUserMedia({
+        audio: { 
+
+                echoCancellation: false,
+                noiseSuppression: false,
+                autoGainControl: false
+            
+        }
+    }).then(gotStream)
+    .catch(e => {
+        alert('Please allow audio for full functionality');
+        console.log(e);
+    });
     document.getElementById('interaction').addEventListener('click', function() {
         audioContext.resume().then(() => {
             console.log('Audio Context resumed successfully');
         });
     });
+    
 }
 
 window.addEventListener('load', initAudio );
