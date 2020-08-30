@@ -18,6 +18,16 @@
 	<script src="{{ url_for('static',filename='js/main.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/jquery-3.3.1.js') }}"> </script>
 
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176784881-1"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-176784881-1');
+	</script>
+
 	<link rel="shortcut icon" href="{{ url_for('static', filename='swishie.png') }}">
 	
 	<style>
@@ -223,7 +233,7 @@
 
 	<div>
 		<p class="explain">
-			The spectrogram image above is passed into a convolutional neural network(CNN). The CNN's architecture consists of 3 convolutional layers, and 3 fully connected layers, with a total of over 2 million trained neurons. This model was trained on data from the UrbanSound8k dataset, which contains 8k audio samples for 10 types of common urban sounds:
+			The spectrogram image above is passed into a convolutional neural network(CNN). The CNN's architecture consists of 3 convolutional layers, and 3 fully connected layers, with a total of over 2 million trained neurons. This model was trained on data from the UrbanSound8k dataset, which contains 8k audio samples for 10 types of sounds that may be heard in cities:
 		</p>
 		<p class="explain" style="max-width: 80%;">
 			Air conditioner, Car horn, Children playing, Dog bark, Drilling, Engine idling, Gun shot, Jackhammer, Siren, and Street music.
