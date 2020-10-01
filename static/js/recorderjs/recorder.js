@@ -119,7 +119,8 @@ DEALINGS IN THE SOFTWARE.
     form.append('file', file);
 
     var predResult = document.getElementById("pred-result");
-    
+    var predCertainty = document.getElementById("pred-certainty");
+
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -129,24 +130,25 @@ DEALINGS IN THE SOFTWARE.
         contentType: false,
         cache: false,
 
-
-
         success: function (form) {
             console.log("[client] recording completed: \n",form);
-
-            // if there is some error with getting audio form.result will purposefully contain an error
+            // if there is some error with getting audio, <form.result> will purposefully contain an error message
             if (form.result == "inputError") {
-              predResult.innerHTML = "input error - try refreshing page"
+              predResult.innerHTML = "audio capture failed - try refreshing page"
             }
             else {
               predResult.classList.remove("hidden")
-              predResult.innerHTML = form.result + " \n -- \n\nprobability: " + form.probability
-              
-              var spect_canvas = document.getElementById("spect_canvas");
-              var ctx = spect_canvas.getContext("2d");
+              predCertainty.style.display = "block"
+              predResult.innerHTML = "Sound Source: " + form.result
+              predCertainty.innerHTML = "Model Certainty: " + form.probability + "%"
+
+              var canvas = document.getElementById("spect_canvas");
+              var ctx = canvas.getContext("2d");
               var img = new Image();
               img.onload = function() {
-                ctx.drawImage(img, 0, 0, 600, 200);
+                var w = canvas.width;
+                var h = canvas.height;
+                ctx.drawImage(img, 0, 0, w, h);
               };
               img.src = form.spec;
             }

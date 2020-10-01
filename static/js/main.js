@@ -48,6 +48,8 @@ function gotBuffers( buffers ) {
 
     var pred_result = document.getElementById("pred-result")
     pred_result.innerHTML = ". . . generating prediction . . ."
+    var pred_certainty = document.getElementById("pred-certainty")
+    pred_certainty.innerHTML = ". . . model working  . . ."
 }
 
 function doneEncoding( blob ) {
@@ -65,14 +67,18 @@ function toggleRecording( e ) {
         audioRecorder.getBuffers( gotBuffers );
     } else {
         // start recording
+        var pred_result = document.getElementById("pred-result");
+        pred_result.innerHTML = "RECORDING";
+        var pred_certainty = document.getElementById("pred-certainty");
+        pred_certainty.innerHTML = " ";
+
         if (!audioRecorder)
             return;
         e.classList.add("recording");
         audioRecorder.clear();
         audioRecorder.record();
 
-        var pred_result = document.getElementById("pred-result")
-        pred_result.innerHTML = "RECORDING"
+        
     }
 }
 
@@ -183,7 +189,6 @@ function initAudio() {
 
     navigator.mediaDevices.getUserMedia({
         audio: { 
-
                 echoCancellation: false,
                 noiseSuppression: false,
                 autoGainControl: false
@@ -194,14 +199,12 @@ function initAudio() {
         alert('Please allow audio for full functionality');
         console.log(e);
     });
-    document.getElementById('interaction').addEventListener('click', function() {
-        audioContext.resume().then(() => {
-            console.log('Audio Context resumed successfully');
-        });
+
+    $("button").click(function(){
+        audioContext.resume()
     });
     
 }
 
 window.addEventListener('load', initAudio );
-
 

@@ -6,6 +6,7 @@
 	<meta name="keywords" content="urbansound8k,audio,classification,machine,neural,python,tensorflow">
 	<meta name="generator" content="python,flask,tensorflow,javascript,Web Audio API,gunicorn,nginx">
 	<meta name="theme-color" content="#141414">
+
 	<meta name="author" content="Jared Keil">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<meta name="subject" content="Audio classification with machine learning">
@@ -21,167 +22,14 @@
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176784881-1"></script>
 	<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-
-	gtag('config', 'UA-176784881-1');
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-176784881-1');
 	</script>
 
 	<link rel="shortcut icon" href="{{ url_for('static', filename='swishie.png') }}">
-	
-	<style>
-	html { overflow: auto; }
-	body { 
-		font: 14pt Arial, Helvetica, sans-serif;
-		color: #cfb845; 
-		background: #141414;
-		display: flex;
-		flex-direction: column;
-		align-content:stretch;
-		text-align: center;
-		height: 10%;
-		width: 100%;
-		max-width: 100%;
-		margin: 0 auto 2em;
-	}
-
-	h1, h2, h3, h4, h5, footer {
-		font-weight: normal;
-		letter-spacing: 0.1em;
-		margin: .25em;
-	}
-
-	h1 {
-		letter-spacing: 0.5em;
-		color: white;
-		margin-top: 1em;
-	}
-
-	h2{ margin-bottom: 2em }
-
-	h3 { margin-top: 2em; }
-
-	h4, h5 { letter-spacing: inital; }
-
-	a {
-		font-size: 10pt;
-		color: #00a4d6;
-	}
-
-	p {
-		margin: 0 auto;
-		width: 40em;
-		max-width: 95%;
-	}
-
-	p.howto {
-		text-decoration: underline; 
-		margin-bottom: 0;
-	}
-
-	p.steps{ margin-bottom: 0; max-width: 95%; }
-
-	p.note  {
-		/* text-align: left; */
-		margin-bottom: 0;
-	}
-
-	p.explain {
-		/* text-align: left; */
-		text-indent: 2em;
-		margin-top: 2em;
-	}
-
-	button.refresh {
-		background-color: #141414;
-		color: #00a4d6;
-		font-weight: bold;
-		border: 1px solid #00a4d6;
-		border-radius: 4px;
-		padding: .15em .5em;
-		margin: 0 auto 1em;
-	}
-
-	button.refresh:hover {
-		background-color: #00a4d6;
-		color: #000000;
-		transition-duration: 0.4s;
-	}
-
-	button.refresh:active {
-		background-color: #00a4d6c0;
-		transform: translateY(2px);
-	}
-
-	canvas { 
-		display: block; 
-		background: #141414;
-		height: auto;
-		max-width: 100%;
-		border: .1em solid white;
-		border-radius: 2px;
-	}
-
-	#pred-result {
-		color: #00a4d6;
-		margin: 0 auto 1em;
-	}
-
-	#controls {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content:  space-around;
-		margin: 1em auto 0.5em;
-		max-width: 100%;
-		height: auto;
-	}
-
-	#record, #savbutton { 
-		fill: #00a4d6;
-		height: 2em;
-		width: auto;
-		border: 2px outset #00a4d6a2;
-		padding: 1px;
-		border-radius: 4px;
-	}
-
-	#record:hover, #savbutton:hover {
-		background:#00a4d6;
-		fill: black;
-		cursor: pointer;
-		/* box-shadow: 1px 1px 6px 1px #00a4d659; */
-		transition-duration: 0.2s;
-	}
-
-	#record.recording { 
-		fill: black;
-		background: red;
-		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
-		background: -moz-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
-		background: radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
-		transform: translateY(2px);
-	}
-
-	#save { opacity: 0.25;}
-	#save[download] { opacity: 1;}
-	#savbutton { 
-		padding: 4px;
-	}
-
-	#viz {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		/* justify-content: space-around; */
-		height: auto;
-		width: 50em;
-		max-width: 95%;
-		margin: 0 auto;
-	}
-	</style>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
 <body>
@@ -189,59 +37,50 @@
 	<h2>urban sound classification</h2>
 	
 	<div>
-		<p class="howto">How To Use</p>
-		<p class="steps"> click mic button to start/stop recording
-		<br> view the captured waveform and spectrogram
-		<br> predictions generate below within a few seconds </p>
-		<br>
-		<p class="note">
-		Note: If you don't already see an active audio vizualizer in the first large box below, it's either because you haven't allowed the mic, or your browser wants an initial interaction (a.k.a click) on the page.
-		<button class="refresh" id="interaction"> click here to 'interact' and give chrome what it wants</button>
-	</p>
+		<button type="button" class="collapsible"> How To</button>
+		<div class="steps">
+			<p >
+				click mic button to start/stop recording<br>
+				view the captured waveform and spectrogram<br>
+				predictions generate below within a few seconds<br>
+			</p>
+			<p class="note">
+				Note: If you don't already see an active audio vizualizer in the first large box below, it's either because you haven't allowed the mic, or your browser wants an initial interaction (a.k.a click) on the page.
+				<button class="refresh" id="interaction"> click here to 'interact' and give chrome what it wants</button>
+			</p>
+		</div>		
 	</div>
 
 	<div id="controls">
-		<div>record</div> &nbsp;&nbsp;		
+		<!-- <div>record</div> &nbsp;&nbsp;		 -->
 		<svg  id="record" title="start/stop record" onclick="toggleRecording(this);"
 			xmlns="http://www.w3.org/2000/svg" version="1.1" width="512" height="512" viewBox="0 0 512 512" fill="#00000">
-			<path d="M 240.00,352.00c 44.183,0.00, 80.00-35.817, 80.00-80.00L 320.00,80.00 c0.00-44.183-35.817-80.00-80.00-80.00s-80.00,35.817-80.00,80.00l0.00,192.00 C 160.00,316.183, 195.818,352.00, 240.00,352.00zM 352.00,224.00l0.00,48.00 c0.00,61.855-50.145,112.00-112.00,112.00c-61.856,0.00-112.00-50.145-112.00-112.00l0.00-48.00 L 96.00,224.00 l0.00,48.00 c0.00,74.119, 56.002,135.15, 128.00,143.11L 224.00,480.00 l-64.00,0.00 l0.00,32.00 l 64.00,0.00 l 32.00,0.00 l 64.00,0.00 l0.00-32.00 l-64.00,0.00 l0.00-64.89 c 71.997-7.96, 128.00-68.991, 128.00-143.11l0.00-48.00 L 352.00,224.00 z" ></path>
-		</svg>
+			<path d="M 240.00,352.00c 44.183,0.00, 80.00-35.817, 80.00-80.00L 320.00,80.00 c0.00-44.183-35.817-80.00-80.00-80.00s-80.00,35.817-80.00,80.00l0.00,192.00 C 160.00,316.183, 195.818,352.00, 240.00,352.00zM 352.00,224.00l0.00,48.00 c0.00,61.855-50.145,112.00-112.00,112.00c-61.856,0.00-112.00-50.145-112.00-112.00l0.00-48.00 L 96.00,224.00 l0.00,48.00 c0.00,74.119, 56.002,135.15, 128.00,143.11L 224.00,480.00 l-64.00,0.00 l0.00,32.00 l 64.00,0.00 l 32.00,0.00 l 64.00,0.00 l0.00-32.00 l-64.00,0.00 l0.00-64.89 c 71.997-7.96, 128.00-68.991, 128.00-143.11l0.00-48.00 L 352.00,224.00 z" ></path></svg>
 		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-		<div>save</div> &nbsp;&nbsp;
+		<!-- <div>save</div> &nbsp;&nbsp; -->
 		<a id="save" href="#">			
 			<svg id="savbutton" title="save audio (optional)" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 459 459" fill="#00000">
-				<path d="M357 0H51C23 0 0 23 0 51v357c0 28.1 23 51 51 51h357c28.1 0 51-22.9 51-51V102L357 0zM229.5 408c-43.3 0-76.5-33.1-76.5-76.5s33.2-76.5 76.5-76.5c43.4 0 76.5 33.2 76.5 76.5S272.9 408 229.5 408zM306 153H51V51h255V153z"/>
-		  	</svg>
+				<path d="M357 0H51C23 0 0 23 0 51v357c0 28.1 23 51 51 51h357c28.1 0 51-22.9 51-51V102L357 0zM229.5 408c-43.3 0-76.5-33.1-76.5-76.5s33.2-76.5 76.5-76.5c43.4 0 76.5 33.2 76.5 76.5S272.9 408 229.5 408zM306 153H51V51h255V153z"/></svg>
 		</a>
 	</div>
 
-	<p id="pred-result" >
-		. . . waiting to record . . .
-	</p>
+	<p id="pred-result" class="pred">waiting . . . hit 'record'</p>
+	<p id="pred-certainty" class="pred"></p>
 
 	<div id="viz">
-		<canvas id="analyser" width="600" height="200" title="Live Audio Frequency bins"></canvas>
-		<br>
-		<canvas id="wavedisplay" width="600" height="200" title="Recorded Waveform"></canvas>
-		<br>
-		<!-- <p id="pred-result" >
-			. . . waiting to record . . .
-		</p> -->
-		<canvas id="spect_canvas" width="600" height="200" title="Spectrogram Canvas"></canvas>
-		<br>
+		<canvas id="analyser" width="600" height="200" title="Live Audio Frequency bins"></canvas><br>
+		<canvas id="wavedisplay" width="600" height="200" title="Recorded Waveform"></canvas><br>
+		<canvas id="spect_canvas" width="600" height="200" title="Spectrogram Canvas"></canvas><br>
 	</div>
 
 	<div>
 		<p class="explain">
-			The spectrogram image above is passed into a convolutional neural network(CNN). The CNN's architecture consists of 3 convolutional layers, and 3 fully connected layers, with a total of over 2 million trained neurons. This model was trained on data from the UrbanSound8k dataset, which contains 8k audio samples for 10 types of sounds that may be heard in cities:
-		</p>
+			The spectrogram image above is passed into a convolutional neural network(CNN). The CNN's architecture consists of 3 convolutional layers, and 3 fully connected layers, with a total of over 2 million trained neurons. This model was trained on data from the UrbanSound8k dataset, which contains 8k audio samples for 10 types of sounds that may be heard in cities:</p>
 		<p class="explain" style="max-width: 80%;">
-			Air conditioner, Car horn, Children playing, Dog bark, Drilling, Engine idling, Gun shot, Jackhammer, Siren, and Street music.
-		</p>
+			Air conditioner, Car horn, Children playing, Dog bark, Drilling, Engine idling, Gun shot, Jackhammer, Siren, and Street music.</p>
 		<p class="explain">
 			If you would like to learn more about how this project was made, contact me, 
-			or view the code, check out the links below.
-		</p>
+			or view the code, check out the links below.</p>
 	</div>
 
 	<h3>created by jared keil &nbsp;&nbsp; <br>
@@ -255,6 +94,22 @@
 		<a href="https://github.com/crunker99/sourcing-sound">neural network</a> python/tensorflow
 	</h5>
 
+<script>
+	var coll = document.getElementsByClassName("collapsible");
+	var i;
+	
+	for (i = 0; i < coll.length; i++) {
+	  coll[i].addEventListener("click", function() {
+		this.classList.toggle("active");
+		var content = this.nextElementSibling;
+		if (content.style.display === "block") {
+		  content.style.display = "none";
+		} else {
+		  content.style.display = "block";
+		}
+	  });
+	}
+</script>
 	
 </body>
 </html>
