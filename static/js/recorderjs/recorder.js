@@ -131,7 +131,7 @@ DEALINGS IN THE SOFTWARE.
         cache: false,
 
         success: function (form) {
-            console.log("[client] recording completed: \n",form);
+            console.log("[client] recording completed: \n");
             // if there is some error with getting audio, <form.result> will purposefully contain an error message
             if (form.result == "inputError") {
               predResult.innerHTML = "audio capture failed - try refreshing page"

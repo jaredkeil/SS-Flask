@@ -1,4 +1,4 @@
-from helpers import featurize_predict
+from src.helpers import featurize_predict
 
 from flask import Flask, url_for, request, render_template, Response, jsonify
 from werkzeug.utils import secure_filename
@@ -40,5 +40,5 @@ def predict():
     return None
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
     app.run(host='0.0.0.0')
