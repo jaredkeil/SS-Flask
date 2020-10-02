@@ -73,12 +73,6 @@ function toggleRecording( e ) {
         // start recording
         $("#pred-result, #pred-certainty").hide();
         $(".recording-msg").show();
-        
-        // $("#pred-result").show();
-        // $("#pred-result").html("RECORDING");
-        
-        // var pred_certainty = document.getElementById("pred-certainty");
-        // pred_certainty.innerHTML = " ";
 
         if (!audioRecorder)
             return;

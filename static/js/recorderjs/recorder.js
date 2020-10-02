@@ -132,9 +132,10 @@ DEALINGS IN THE SOFTWARE.
         success: function (form) {
             $("#spinner").hide();
             console.log("[client] recording completed: \n");
-            // if there is some error with getting audio, <form.result> will purposefully contain an error message
+            // if there is some error with getting audio , <form.result> will purposefully contain an error message
             if (form.result == "inputError") {
-              $(".error-msg").css("display", "inline-block");
+              $(".error-msg").show();
+              // $(".error-msg").show();
               $(".refresh").click(function(){
                   $(".error-msg").hide();
               });
