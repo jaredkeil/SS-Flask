@@ -52,16 +52,18 @@ p {
   text-align: left;
   outline: none;
   font-size: 12pt;
+  
 }
 .active, .collapsible:hover {
   background-color: #cfb845;
   color: #141414;
+  transition-duration: 0.2s;
 }
 .collapsible:after {
   content: '\25B8';
   color: #cfb845;
-  float: right;
-  margin-left: 1em;
+  float: left;
+  margin-right: .5em;
 }
 .collapsible:hover:after{
   color: #141414;
@@ -72,12 +74,13 @@ p {
 }
 
 .steps{ 
+  background-color: #2c2c2c;
   margin: 0.5em auto 0;
   width: 40em;
   max-width: 95%; 
-  display: none;
+  max-height: 0;
   overflow: hidden;
-  background-color: #2c2c2c;
+  transition: max-height 0.15s ease-out;
 }
 
 p.note  {
@@ -89,7 +92,7 @@ p.explain {
   margin-top: 2em;
 }
 
-button.refresh {
+.refresh {
   background-color: transparent;
   color: #00a4d6;
   cursor: pointer;
@@ -98,15 +101,16 @@ button.refresh {
   border-radius: 4px;
   padding: .15em .5em;
   margin: 0 auto 1em;
+  display: inline-block;
 }
 
-button.refresh:hover {
+.refresh:hover {
   background-color: #00a4d6;
   color: #000000;
   transition-duration: 0.4s;
 }
 
-button.refresh:active {
+.refresh:active {
   background-color: #00a4d6c0;
   transform: translateY(2px);
 }
@@ -120,12 +124,27 @@ canvas {
   border-radius: 2px;
 }
 
+.error-msg {
+  display: none;
+}
+
+.recording-msg{
+  display: none;
+}
+
 .pred {
   color: #00a4d6;
   margin: 0 auto 1em;
+  display: inline-block;
 }
+
+#pred-result{
+  display: inline-block;
+  /* margin: 0; */
+}
+
 #pred-certainty{
-  display: none;
+  display: inline-block;
 }
 
 #controls {
@@ -139,6 +158,14 @@ canvas {
   height: auto;
 }
 
+.pulse {
+  box-shadow: 0 0 0 0 rgba(0, 164, 214, 0.64);
+  -webkit-animation: pulsing .25s infinite cubic-bezier(0.66, 0, 0, 1);
+  -moz-animation: pulsing 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+  -ms-animation: pulsing 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+  animation: pulsing 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
+  transition: all 300ms ease-in-out;
+}
 #record, #savbutton { 
   fill: #00a4d6;
   height: 2em;
@@ -146,6 +173,16 @@ canvas {
   border: 2px outset #00a4d6a2;
   padding: 1px;
   border-radius: 4px;
+  
+}
+
+
+#record:hover {
+  -webkit-animation: none;
+  -moz-animation: none;
+  -ms-animation: none;
+  animation: none;
+  /* color: #ffffff; */
 }
 
 #record:hover, #savbutton:hover {
@@ -157,6 +194,7 @@ canvas {
 
 #record.recording { 
   fill: black;
+  border: 2px outset red;
   background: red;
   background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
   background: -moz-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
@@ -180,47 +218,54 @@ canvas {
   margin: 0 auto;
 }
 
-/*  *//*  *//*  *//*  *//*  *//*  *//*  */
-
-/* Old */
-#loader {
-  position: absolute;
+#spinner {
+  content: '';
+  box-sizing: border-box;
+  border: 2px solid #2c2c2c;
+  border-radius: 50%;
+  border-top-color: #00a4d6;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
+  width: 20px;
+  height: 20px;
   margin: 0 auto;
+  display: none;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 /* Animation */
-#spinner {
-  box-sizing: border-box;
-  stroke: #cccccc;
-  stroke-width: 3px;
-  transform-origin: 50%;
-  animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite,
-    rotate 1.6s linear infinite;
-}
-@keyframes rotate {
-  from {
-    transform: rotate(0);
-  }
+
+@-webkit-keyframes pulsing {
   to {
-    transform: rotate(450deg);
+    box-shadow: 0 0 0 5em rgba(232, 76, 61, 0);
   }
 }
-@keyframes line {
-  0% {
-    stroke-dasharray: 2, 85.964;
-    transform: rotate(0);
-  }
-  50% {
-    stroke-dasharray: 65.973, 21.9911;
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dasharray: 2, 85.964;
-    stroke-dashoffset: -65.973;
-    transform: rotate(90deg);
+
+@-moz-keyframes pulsing {
+  to {
+    box-shadow: 0 0 0 30px rgba(232, 76, 61, 0);
   }
 }
+
+@-ms-keyframes pulsing {
+  to {
+    box-shadow: 0 0 0 30px rgba(232, 76, 61, 0);
+  }
+}
+
+@keyframes pulsing {
+  to {
+    box-shadow: 0 0 0 0.5em rgba(232, 76, 61, 0);
+  }
+}
+
+
+@-webkit-keyframes spin {
+  to{ -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  to{ transform: rotate(360deg); }
+}
+

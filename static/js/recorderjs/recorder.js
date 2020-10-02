@@ -118,8 +118,7 @@ DEALINGS IN THE SOFTWARE.
     var form = new FormData();
     form.append('file', file);
 
-    var predResult = document.getElementById("pred-result");
-    var predCertainty = document.getElementById("pred-certainty");
+    $("#spinner").show();
 
     $.ajax({
         type: "POST",
@@ -131,16 +130,20 @@ DEALINGS IN THE SOFTWARE.
         cache: false,
 
         success: function (form) {
+            $("#spinner").hide();
             console.log("[client] recording completed: \n");
             // if there is some error with getting audio, <form.result> will purposefully contain an error message
             if (form.result == "inputError") {
-              predResult.innerHTML = "audio capture failed - try refreshing page"
+              $(".error-msg").css("display", "inline-block");
+              $(".refresh").click(function(){
+                  $(".error-msg").hide();
+              });
             }
             else {
-              predResult.classList.remove("hidden")
-              predCertainty.style.display = "block"
-              predResult.innerHTML = "Sound Source: " + form.result
-              predCertainty.innerHTML = "Model Certainty: " + form.probability + "%"
+              $("#pred-result").html("Sound Source: " + form.result);
+              $("#pred-certainty").html("Model Certainty: " + form.probability + "%");
+              $("#pred-result, #pred-certainty").show();
+
 
               var canvas = document.getElementById("spect_canvas");
               var ctx = canvas.getContext("2d");

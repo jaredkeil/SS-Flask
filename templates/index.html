@@ -44,16 +44,13 @@
 				view the captured waveform and spectrogram<br>
 				predictions generate below within a few seconds<br>
 			</p>
-			<p class="note">
-				Note: If you don't already see an active audio vizualizer in the first large box below, it's either because you haven't allowed the mic, or your browser wants an initial interaction (a.k.a click) on the page.
-				<button class="refresh" id="interaction"> click here to 'interact' and give chrome what it wants</button>
-			</p>
-		</div>		
+			
+		</div>
 	</div>
 
 	<div id="controls">
 		<!-- <div>record</div> &nbsp;&nbsp;		 -->
-		<svg  id="record" title="start/stop record" onclick="toggleRecording(this);"
+		<svg  id="record" class="pulse" title="start/stop record" onclick="toggleRecording(this);"
 			xmlns="http://www.w3.org/2000/svg" version="1.1" width="512" height="512" viewBox="0 0 512 512" fill="#00000">
 			<path d="M 240.00,352.00c 44.183,0.00, 80.00-35.817, 80.00-80.00L 320.00,80.00 c0.00-44.183-35.817-80.00-80.00-80.00s-80.00,35.817-80.00,80.00l0.00,192.00 C 160.00,316.183, 195.818,352.00, 240.00,352.00zM 352.00,224.00l0.00,48.00 c0.00,61.855-50.145,112.00-112.00,112.00c-61.856,0.00-112.00-50.145-112.00-112.00l0.00-48.00 L 96.00,224.00 l0.00,48.00 c0.00,74.119, 56.002,135.15, 128.00,143.11L 224.00,480.00 l-64.00,0.00 l0.00,32.00 l 64.00,0.00 l 32.00,0.00 l 64.00,0.00 l0.00-32.00 l-64.00,0.00 l0.00-64.89 c 71.997-7.96, 128.00-68.991, 128.00-143.11l0.00-48.00 L 352.00,224.00 z" ></path></svg>
 		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -64,8 +61,16 @@
 		</a>
 	</div>
 
-	<p id="pred-result" class="pred">waiting . . . hit 'record'</p>
-	<p id="pred-certainty" class="pred"></p>
+	<div class="pred"> 
+		<p class="recording-msg">RECORDING</p>
+		<span class="error-msg">
+			<p id="msg"> Audio capture failed </p> 
+			<button class="refresh" id="interaction"> click here</button>
+		</span>
+		<div id="spinner"></div>
+		<p id="pred-result"></p>
+		<p id="pred-certainty"></p>
+	</div>
 
 	<div id="viz">
 		<canvas id="analyser" width="600" height="200" title="Live Audio Frequency bins"></canvas><br>
@@ -102,13 +107,19 @@
 	  coll[i].addEventListener("click", function() {
 		this.classList.toggle("active");
 		var content = this.nextElementSibling;
-		if (content.style.display === "block") {
-		  content.style.display = "none";
+		if (content.style.maxHeight) {
+      		content.style.maxHeight = null;
 		} else {
-		  content.style.display = "block";
+			content.style.maxHeight = content.scrollHeight + "px";
 		}
 	  });
 	}
+
+	$(document).ready(function(){
+		$("#record").click(function(){
+			$(this).removeClass('pulse');                   
+   		});
+	})
 </script>
 	
 </body>

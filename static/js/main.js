@@ -46,31 +46,39 @@ function gotBuffers( buffers ) {
     // so here's where we should set up the download.
     audioRecorder.exportWAV( doneEncoding );
 
-    var pred_result = document.getElementById("pred-result")
-    pred_result.innerHTML = ". . . generating prediction . . ."
-    var pred_certainty = document.getElementById("pred-certainty")
-    pred_certainty.innerHTML = ". . . model working  . . ."
+    // var pred_result = document.getElementById("pred-result")
+    // pred_result.innerHTML = ". . . generating prediction . . ."
+    // var pred_certainty = document.getElementById("pred-certainty")
+    // pred_certainty.innerHTML = ". . . model working  . . ."
 }
 
 function doneEncoding( blob ) {
     Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
     recIndex++;
-    // pass to predict?
-    // Recorder.setupPredict(blob);
 }
 
 function toggleRecording( e ) {
     if (e.classList.contains("recording")) {
         // stop recording
+        $(".recording-msg").hide();
         audioRecorder.stop();
         e.classList.remove("recording");
         audioRecorder.getBuffers( gotBuffers );
+
+        if ( $(".error-msg").is(":hidden") ){
+            $("#spinner").show();
+        }
+
     } else {
         // start recording
-        var pred_result = document.getElementById("pred-result");
-        pred_result.innerHTML = "RECORDING";
-        var pred_certainty = document.getElementById("pred-certainty");
-        pred_certainty.innerHTML = " ";
+        $("#pred-result, #pred-certainty").hide();
+        $(".recording-msg").show();
+        
+        // $("#pred-result").show();
+        // $("#pred-result").html("RECORDING");
+        
+        // var pred_certainty = document.getElementById("pred-certainty");
+        // pred_certainty.innerHTML = " ";
 
         if (!audioRecorder)
             return;
