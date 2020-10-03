@@ -7,7 +7,6 @@ body {
   flex-direction: column;
   align-content:stretch;
   text-align: center;
-  height: 10%;
   width: 100%;
   max-width: 100%;
   margin: 1em auto 2em;
@@ -18,16 +17,12 @@ h1, h2, h3, h4, h5, footer {
   letter-spacing: 0.1em;
   margin: .25em;
 }
-
 h1 {
   letter-spacing: 0.5em;
   color: white;
 }
-
 h2{ margin-bottom: 2em }
-
 h3 { margin-top: 2em; }
-
 h4, h5 { letter-spacing: inital; }
 
 a {
@@ -47,7 +42,7 @@ p {
   cursor: pointer;
   padding: 0.4em;
   font-weight: bold;
-  width: 10em;
+  width: 8em;
   border: 1px solid #cfb845;
   text-align: left;
   outline: none;
@@ -72,19 +67,29 @@ p {
   color: #141414;
 }
 
-.steps{ 
-  background-color: #2c2c2c;
-  margin: 0.5em auto 0;
-  width: 30em;
-  max-width: 95%; 
+.expanding-text{ 
+  /* background-color: #2c2c2c; */
+  margin: .5em auto;
+  width: 600px;
+  max-width: 100%; 
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.15s ease-out;
+  text-align: justify;
 }
 
-.explain {
-  text-indent: 2em;
-  margin-top: 2em;
+.howto, .about{
+  margin: 0 auto;
+  width: 600px;
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
+}
+#about-button, #howto-button { float: left; }
+
+#class-list {
+  margin: .5em auto;
+  text-align: justify;
 }
 
 .refresh {
@@ -94,8 +99,7 @@ p {
   font-weight: bold;
   border: 1px solid #00a4d6;
   border-radius: 4px;
-  padding: .15em .5em;
-  margin: 0 auto 1em;
+  margin: 0 auto;
   display: inline-block;
 }
 
@@ -110,13 +114,41 @@ p {
   transform: translateY(2px);
 }
 
-canvas { 
-  display: block; 
-  background: #141414;
-  height: auto;
+.rec-pred {
+  margin: 0.5em auto;
+  width: 600px;
+  max-width: 95%;
+  height: 3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: auto;
+  justify-content: space-between;
+  position: relative;
+  overflow: auto;
+}
+
+#controls {
   max-width: 100%;
-  border: .1em solid white;
-  border-radius: 2px;
+  height: auto;
+}
+
+.pred {
+  color: #00a4d6;
+  text-align: center;
+  height: 3em;
+  width: inherit;
+  max-width: 65%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .error-msg {
@@ -124,27 +156,8 @@ canvas {
 }
 
 .recording-msg{
+  color: rgb(173, 36, 18);
   display: none;
-}
-
-.pred {
-  color: #00a4d6;
-  margin: 0 auto 1em;
-  display: inline-block;
-  width: 30em;
-  max-width: 100%;
-  align-items: center;
-}
-
-#controls {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content:  space-around;
-  margin: 1em auto 0.5em;
-  max-width: 100%;
-  height: auto;
 }
 
 #record, #savbutton { 
@@ -152,9 +165,8 @@ canvas {
   height: 2em;
   width: auto;
   border: 2px outset #00a4d6a2;
-  padding: 1px;
+  padding: 2px;
   border-radius: 4px;
-  
 }
 
 #record:hover {
@@ -173,8 +185,8 @@ canvas {
 
 #record.recording { 
   fill: black;
-  border: 2px outset red;
-  background: red;
+  border: 2px outset black;
+  background: rgb(173, 36, 18);
   background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
   background: -moz-radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
   background: radial-gradient(center, ellipse cover, #ff0000 0,black 100%); 
@@ -190,10 +202,25 @@ canvas {
   transition: all 300ms ease-in-out;
 }
 
-#save { opacity: 0.25;}
-#save[download] { opacity: 1;}
+#save { 
+  opacity: 0.25;
+  display: none;
+}
+#save[download] {
+  opacity: 1; 
+  display: none;
+}
 #savbutton { 
   padding: 4px;
+}
+
+canvas { 
+  display: block; 
+  background: #141414;
+  height: auto;
+  max-width: 100%;
+  border: .1em solid white;
+  border-radius: 2px;
 }
 
 #viz {

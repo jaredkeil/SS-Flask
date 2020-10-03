@@ -36,91 +36,85 @@
 	<h1>SOURCING SOUND</h1>
 	<h2>urban sound classification</h2>
 	
-	<div>
-		<button type="button" class="collapsible"> How To</button>
-		<div class="steps">
-			<p >
-				click mic button to start/stop recording<br>
-				view the captured waveform and spectrogram<br>
-				predictions generate below within a few seconds<br>
-			</p>
-			
+	<div class="howto">
+		<button type="button" class="collapsible" id="howto-button"> How To</button>
+		<div class="expanding-text"><p>Press mic to start & stop recording. Spectrogram is extracted from captured sounds. Predictions generate automatically.
+		</p></div>
+	</div>
+
+	<div class="rec-pred">
+		<div id="controls">
+			<svg id="record" class="pulse" title="start/stop record" onclick="toggleRecording(this);"
+				xmlns="http://www.w3.org/2000/svg" version="1.1" width="512" height="512" viewBox="0 0 512 512" fill="#00000">
+				<path d="M 240.00,352.00c 44.183,0.00, 80.00-35.817, 80.00-80.00L 320.00,80.00 c0.00-44.183-35.817-80.00-80.00-80.00s-80.00,35.817-80.00,80.00l0.00,192.00 C 160.00,316.183, 195.818,352.00, 240.00,352.00zM 352.00,224.00l0.00,48.00 c0.00,61.855-50.145,112.00-112.00,112.00c-61.856,0.00-112.00-50.145-112.00-112.00l0.00-48.00 L 96.00,224.00 l0.00,48.00 c0.00,74.119, 56.002,135.15, 128.00,143.11L 224.00,480.00 l-64.00,0.00 l0.00,32.00 l 64.00,0.00 l 32.00,0.00 l 64.00,0.00 l0.00-32.00 l-64.00,0.00 l0.00-64.89 c 71.997-7.96, 128.00-68.991, 128.00-143.11l0.00-48.00 L 352.00,224.00 z" ></path>
+			</svg>
+		</div>
+		<div class="pred"> 
+			<p class="recording-msg">RECORDING</p>
+			<p class="error-msg">Audio capture failed <button class="refresh" id="interaction"> click here</button></p>
+			<div id="spinner"></div>
+			<p id="pred-result"></p>
+			<p id="pred-certainty"></p>
 		</div>
 	</div>
 
-	<div id="controls">
-		<!-- <div>record</div> &nbsp;&nbsp;		 -->
-		<svg  id="record" class="pulse" title="start/stop record" onclick="toggleRecording(this);"
-			xmlns="http://www.w3.org/2000/svg" version="1.1" width="512" height="512" viewBox="0 0 512 512" fill="#00000">
-			<path d="M 240.00,352.00c 44.183,0.00, 80.00-35.817, 80.00-80.00L 320.00,80.00 c0.00-44.183-35.817-80.00-80.00-80.00s-80.00,35.817-80.00,80.00l0.00,192.00 C 160.00,316.183, 195.818,352.00, 240.00,352.00zM 352.00,224.00l0.00,48.00 c0.00,61.855-50.145,112.00-112.00,112.00c-61.856,0.00-112.00-50.145-112.00-112.00l0.00-48.00 L 96.00,224.00 l0.00,48.00 c0.00,74.119, 56.002,135.15, 128.00,143.11L 224.00,480.00 l-64.00,0.00 l0.00,32.00 l 64.00,0.00 l 32.00,0.00 l 64.00,0.00 l0.00-32.00 l-64.00,0.00 l0.00-64.89 c 71.997-7.96, 128.00-68.991, 128.00-143.11l0.00-48.00 L 352.00,224.00 z" ></path></svg>
-		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-		<!-- <div>save</div> &nbsp;&nbsp; -->
-		<a id="save" href="#">			
-			<svg id="savbutton" title="save audio (optional)" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 459 459" fill="#00000">
-				<path d="M357 0H51C23 0 0 23 0 51v357c0 28.1 23 51 51 51h357c28.1 0 51-22.9 51-51V102L357 0zM229.5 408c-43.3 0-76.5-33.1-76.5-76.5s33.2-76.5 76.5-76.5c43.4 0 76.5 33.2 76.5 76.5S272.9 408 229.5 408zM306 153H51V51h255V153z"/></svg>
-		</a>
-	</div>
-
-	<div class="pred"> 
-		<p class="recording-msg">RECORDING</p>
-		<span class="error-msg">
-			<p id="msg"> Audio capture failed </p> 
-			<button class="refresh" id="interaction"> click here</button>
-		</span>
-		<div id="spinner"></div>
-		<p id="pred-result"></p>
-		<p id="pred-certainty"></p>
-	</div>
+	<a id="save" href="#">			
+		<svg id="savbutton" title="save audio (optional)" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 459 459" fill="#00000">
+			<path d="M357 0H51C23 0 0 23 0 51v357c0 28.1 23 51 51 51h357c28.1 0 51-22.9 51-51V102L357 0zM229.5 408c-43.3 0-76.5-33.1-76.5-76.5s33.2-76.5 76.5-76.5c43.4 0 76.5 33.2 76.5 76.5S272.9 408 229.5 408zM306 153H51V51h255V153z"/></svg>
+	</a>
 
 	<div id="viz">
 		<canvas id="analyser" width="600" height="200" title="Live Audio Frequency bins"></canvas><br>
-		<canvas id="wavedisplay" width="600" height="200" title="Recorded Waveform"></canvas><br>
-		<canvas id="spect_canvas" width="600" height="200" title="Spectrogram Canvas"></canvas><br>
+		<canvas id="spect_canvas" width="600" height="200" title="Extracted Spectrogram"></canvas><br>
+		<canvas id="wavedisplay" width="600" height="200" title="Original Recorded Waveform"></canvas><br>
 	</div>
 
-	<div>
-		<p class="explain">
-			The spectrogram representation of a sound is passed through a neural network(CNN), which predicts the sound class. The CNN's architecture consists of 3 convolutional layers, and 3 fully connected layers, with a total of over 2 million trained neurons. Training data came from the UrbanSound8k dataset, which contains samples for 10 types of sounds:</p>
-		<p class="explain" style="max-width: 80%;">
-			Air conditioner, Car horn, Children playing, Dog bark, Drilling, Engine idling, Gun shot, Jackhammer, Siren, and Street music.</p>
-		<p class="explain">
-			If you would like to learn more about how this project was made, contact me, 
+	<div class="about">
+		<button type="button" class='collapsible' id="about-button">About</button>
+		<div class="expanding-text">
+			<p>The spectrogram representation of a sound is passed through a neural network(CNN), which predicts the sound class. The CNN's architecture consists of 3 convolutional layers, and 3 fully connected layers, with a total of over 2 million trained neurons. Training data came from the UrbanSound8k dataset, which contains samples for 10 types of sounds:</p>
+			<div id="class-list"><p>Air conditioner, Car horn, Children playing, Dog bark, Drilling, Engine idling, Gun shot, Jackhammer, Siren, and Street music.</p>
+			</div>
+			<p>If you would like to learn more about how this project was made, contact me, 
 			or view the code, check out the links below.</p>
+		</div>
 	</div>
 
-	<h3>created by jared keil &nbsp;&nbsp; <br>
-		<a href="mailto:jaredrkeil@gmail.com">email</a> &nbsp;&nbsp;
-		<a href="https://github.com/crunker99/">github</a> &nbsp;&nbsp;	
-		<a href="https://www.linkedin.com/in/jared-keil/">linkedin</a> &nbsp;&nbsp;	
-	</h3>
-	
-	<h5>
-		repos: <br> <a href="https://github.com/crunker99/SS-Flask">website</a> flask/JS<br>
-		<a href="https://github.com/crunker99/sourcing-sound">neural network</a> python/tensorflow
-	</h5>
+	<div class="links-bottom">
+		<h3>created by jared keil<br>
+			<a href="mailto:jaredrkeil@gmail.com">email</a> &nbsp;&nbsp;
+			<a href="https://github.com/crunker99/">github</a> &nbsp;&nbsp;	
+			<a href="https://www.linkedin.com/in/jared-keil/">linkedin</a>
+		</h3>
+		<h5>repos:<br>
+			<a href="https://github.com/crunker99/SS-Flask">website</a> flask/JS<br>
+			<a href="https://github.com/crunker99/sourcing-sound">neural network</a> python/tensorflow
+		</h5>
+	</div>
 
-<script>
-	var coll = document.getElementsByClassName("collapsible");
-	var i;
-	
-	for (i = 0; i < coll.length; i++) {
-	  coll[i].addEventListener("click", function() {
-		this.classList.toggle("active");
-		var content = this.nextElementSibling;
-		if (content.style.maxHeight) {
-      		content.style.maxHeight = null;
-		} else {
-			content.style.maxHeight = content.scrollHeight + "px";
+	<script>
+		// collapsible text feature
+		var coll = document.getElementsByClassName("collapsible");
+		var i;
+		for (i = 0; i < coll.length; i++) {
+		  coll[i].addEventListener("click", function() {
+			this.classList.toggle("active");
+			var content = this.nextElementSibling;
+			if (content.style.maxHeight) {
+				  content.style.maxHeight = null;
+			} else {
+				content.style.maxHeight = content.scrollHeight + "px";
+			}
+		  });
 		}
-	  });
-	}
-
-	$(document).ready(function(){
-		$("#record").click(function(){
-			$(this).removeClass('pulse');                   
-   		});
-	})
-</script>
 	
+		// pulsing button feature
+		$(document).ready(function(){
+			$("#record").click(function(){
+				$(this).removeClass('pulse');                   
+			   });
+		})
+	</script>
 </body>
+
 </html>

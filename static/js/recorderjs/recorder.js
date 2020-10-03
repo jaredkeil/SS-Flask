@@ -134,17 +134,16 @@ DEALINGS IN THE SOFTWARE.
             console.log("[client] recording completed: \n");
             // if there is some error with getting audio , <form.result> will purposefully contain an error message
             if (form.result == "inputError") {
-              $(".error-msg").show();
-              // $(".error-msg").show();
-              $(".refresh").click(function(){
-                  $(".error-msg").hide();
-              });
+              $(".error-msg").css("display", "inline-block");
+              $(".refresh, #record").click(function(){
+                $(".error-msg").hide();
+            });
+              
             }
             else {
               $("#pred-result").html("Sound Source: " + form.result);
               $("#pred-certainty").html("Model Certainty: " + form.probability + "%");
               $("#pred-result, #pred-certainty").show();
-
 
               var canvas = document.getElementById("spect_canvas");
               var ctx = canvas.getContext("2d");
